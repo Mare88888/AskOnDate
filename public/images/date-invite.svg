@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffe4e6"/>
+      <stop offset="50%" style="stop-color:#fce7f3"/>
+      <stop offset="100%" style="stop-color:#fff1f2"/>
+    </linearGradient>
+    <linearGradient id="heart" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f43f5e"/>
+      <stop offset="100%" style="stop-color:#ec4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" rx="32" fill="url(#bg)"/>
+  <!-- Decorative circles -->
+  <circle cx="60" cy="80" r="20" fill="#fda4af" opacity="0.4"/>
+  <circle cx="340" cy="60" r="15" fill="#f9a8d4" opacity="0.5"/>
+  <circle cx="320" cy="350" r="25" fill="#fecdd3" opacity="0.4"/>
+  <circle cx="50" cy="320" r="18" fill="#fbcfe8" opacity="0.5"/>
+  <!-- Main heart -->
+  <path d="M200 320 C200 320 80 220 80 150 C80 110 110 85 145 85 C170 85 190 100 200 120 C210 100 230 85 255 85 C290 85 320 110 320 150 C320 220 200 320 200 320Z" fill="url(#heart)"/>
+  <!-- Sparkles -->
+  <text x="100" y="130" font-size="28">(</text>
+  <text x="280" y="140" font-size="24">=•</text>
+  <text x="170" y="90" font-size="22"><8</text>
+  <!-- Cute envelope -->
+  <rect x="130" y="200" width="140" height="90" rx="8" fill="#fff" stroke="#fda4af" stroke-width="3"/>
+  <path d="M130 210 L200 260 L270 210" fill="none" stroke="#fda4af" stroke-width="3"/>
+  <text x="155" y="255" font-size="36">=Œ</text>
+</svg>

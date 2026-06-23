@@ -1,0 +1,340 @@
+Master Prompt
+
+Build a complete production-ready web application using:
+
+Next.js 15+ (App Router)
+React
+TypeScript
+Tailwind CSS
+PostgreSQL
+Prisma ORM
+Neon PostgreSQL
+Vercel deployment compatibility
+
+The application should be a cute, romantic, mobile-friendly date invitation website.
+
+General Requirements
+Use modern UI/UX.
+Responsive design for desktop and mobile.
+Use Tailwind CSS.
+Use Framer Motion for animations.
+Use Server Actions or API routes to save data.
+Use Prisma for all database access.
+Follow clean architecture and best practices.
+Use TypeScript everywhere.
+Include setup instructions.
+Include Prisma schema.
+Include SQL migration.
+Include environment variable examples.
+Database
+
+Create a Prisma model called DateResponse.
+
+Fields:
+
+id String @id @default(cuid())
+accepted Boolean
+dateTime DateTime?
+activity String?
+activityOption String?
+createdAt DateTime @default(now())
+User Flow
+
+The application consists of 5 pages.
+
+Each page should save progress to the database.
+
+Use a unique invitation id passed through the URL.
+
+Example:
+
+/invite/abc123
+
+The same invitation record should be updated throughout the flow.
+
+Page 1 - Date Invitation
+
+Route:
+
+/invite/[id]
+
+Design:
+
+Cute centered card.
+Soft modern colors.
+Rounded corners.
+Slight shadow.
+Cute image at top.
+Card width around 350-450px.
+
+Content:
+
+Will you go on a date with me? ❤️
+
+Buttons:
+
+Yes ❤️
+No 🙈
+
+Requirements:
+
+The Yes button behaves normally.
+The No button should playfully avoid the cursor.
+When the mouse approaches within ~100px:
+move the button to a random position inside the card.
+never leave the card boundaries.
+On mobile:
+No button should move when tapped.
+The interaction should feel playful, not frustrating.
+
+When Yes is clicked:
+
+Save:
+accepted = true
+Navigate to page 2.
+Page 2 - Date and Time Selection
+
+Route:
+
+/invite/[id]/datetime
+
+Design:
+
+Same card style.
+
+Question:
+
+When are you free?
+
+Components:
+
+Date picker
+Time picker
+
+Requirements:
+
+User must select both.
+Store selected DateTime in database.
+
+Buttons:
+
+Back
+Continue
+
+Continue navigates to page 3.
+
+Page 3 - Activity Type
+
+Route:
+
+/invite/[id]/activity
+
+Question:
+
+What kind of date sounds fun?
+
+Display activity cards.
+
+Options:
+
+Sporty
+Casual Drinks
+Restaurant
+Picnic
+Road Trip
+Food Adventure
+Movie Night
+Surprise Me
+
+Requirements:
+
+Cards animate on hover.
+Only one can be selected.
+Save selected activity.
+
+Continue to page 4.
+
+Page 4 - Activity Details
+
+Route:
+
+/invite/[id]/activity-details
+
+Show different options based on activity chosen.
+
+Mappings:
+
+Sporty:
+
+Swimming
+Cycling
+Running
+Mini Golf
+Tennis
+Hiking
+
+Casual Drinks:
+
+Cocktail Bar
+Wine Bar
+Coffee Date
+Craft Beer
+
+Restaurant:
+
+Italian
+Steakhouse
+Sushi
+Burger Place
+Fine Dining
+
+Picnic:
+
+Lake
+Park
+Sunset Viewpoint
+Riverside
+
+Road Trip:
+
+Beach
+Mountains
+Nearby City
+Hidden Gem
+
+Food Adventure:
+
+Street Food
+Dessert Tour
+Brunch
+Food Festival
+
+Movie Night:
+
+Cinema
+Home Movie Night
+Drive-In
+
+Surprise Me:
+
+Trust Your Choice ❤️
+
+Requirements:
+
+Dynamically render based on previous selection.
+Save selected option.
+
+Continue to page 5.
+
+Page 5 - Confirmation
+
+Route:
+
+/invite/[id]/confirmation
+
+Show success animation.
+
+Display:
+
+Thank you ❤️
+
+Display summary:
+
+Date:
+[selected date]
+
+Time:
+[selected time]
+
+Activity:
+[selected activity]
+
+Choice:
+[selected activity option]
+
+Show a cute message:
+
+I'm looking forward to seeing you 😊
+
+Display pickup message:
+
+I'll pick you up at the agreed time ❤️
+
+Include a small celebratory animation:
+
+confetti
+hearts floating upward
+Technical Requirements
+
+Create:
+
+/app
+/components
+/lib
+/prisma
+
+Include:
+
+lib/prisma.ts
+
+with proper singleton Prisma client.
+
+Create server actions for:
+
+createInvitation()
+updateInvitation()
+getInvitation()
+
+Use Zod validation.
+
+Handle loading and error states.
+
+Styling
+
+Theme:
+
+Romantic
+Clean
+Modern
+Cute but not childish
+
+Colors:
+
+Rose
+Pink
+White
+Soft Red
+
+Use subtle gradients.
+
+Animations:
+
+Framer Motion
+Smooth transitions between pages
+Hover effects
+Button scaling
+Bonus Features
+
+Implement if possible:
+
+Progress indicator (1/5 → 5/5)
+Auto-save
+Confetti animation on completion
+URL-safe invitation ids
+Metadata for sharing links
+OpenGraph image support
+Dark mode support
+Final Deliverables
+
+Generate:
+
+Complete folder structure.
+Prisma schema.
+Neon database setup instructions.
+Environment variables.
+Full code for all pages.
+Components.
+Server actions.
+Tailwind styling.
+Deployment instructions for Vercel.
+Step-by-step local development setup.

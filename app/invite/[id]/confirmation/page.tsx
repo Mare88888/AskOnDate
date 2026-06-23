@@ -1,0 +1,56 @@
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
+import { getInvitation } from "@/lib/actions";
+import { isValidInvitationId } from "@/lib/utils";
+import { InviteCard } from "@/components/InviteCard";
+import { ProgressIndicator } from "@/components/ProgressIndicator";
+import { ConfirmationSummary } from "@/components/ConfirmationSummary";
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export const metadata: Metadata = {
+  title: "Thank you ❤️",
+};
+
+export default async function ConfirmationPage({ params }: Props) {
+  const { id } = await params;
+
+  if (!isValidInvitationId(id)) {
+    notFound();
+  }
+
+  const result = await getInvitation(id);
+  if (!result.success) {
+    notFound();
+  }
+
+  const { accepted, dateTime, activity, activityOption } = result.data;
+
+  if (!accepted) {
+    redirect(`/invite/${id}`);
+  }
+  if (!dateTime) {
+    redirect(`/invite/${id}/datetime`);
+  }
+  if (!activity) {
+    redirect(`/invite/${id}/activity`);
+  }
+  if (!activityOption) {
+    redirect(`/invite/${id}/activity-details`);
+  }
+
+  return (
+    <InviteCard>
+      <div className="p-6 sm:p-8">
+        <ProgressIndicator currentStep={5} />
+        <ConfirmationSummary
+          dateTime={dateTime}
+          activity={activity}
+          activityOption={activityOption}
+        />
+      </div>
+    </InviteCard>
+  );
+}

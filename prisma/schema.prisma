@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DateResponse {
+  id             String    @id @default(cuid())
+  accepted       Boolean   @default(false)
+  dateTime       DateTime?
+  activity       String?
+  activityOption String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}

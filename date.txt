@@ -1,0 +1,14 @@
+then lets go with that tech stack. Give me prompts or one big prompt to give to an AI to help me build the following website / webapp:
+
+starting page that asks "will you go on a date with me?" with a cute photo all in a small square, two buttons - yes and no where if you try to hover over the no button it avoids the cursor,
+
+second page that lets the user choose the date and time, 
+
+third page where it lets the user choose the activity of the date e.g. (sporty, casual drinks, restaurant, picnic, small roadtrip, food, etc.),
+
+fourth page that lets user choose what they're feeling base off of that activity e.g. if they chose sporty - swimming, cycling, running, minigolf, etc.,
+
+last (fifth) page that thanks the user and lets them know some information for example when they're being picked up.
+
+
+
