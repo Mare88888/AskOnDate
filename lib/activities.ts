@@ -11,53 +11,59 @@ export const ACTIVITIES = [
 
 export type ActivityId = (typeof ACTIVITIES)[number]["id"];
 
-export const ACTIVITY_DETAILS: Record<ActivityId, { id: string; label: string }[]> = {
+export type ActivityOption = {
+  id: string;
+  label: string;
+  emoji: string;
+};
+
+export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
   sporty: [
-    { id: "swimming", label: "Swimming" },
-    { id: "cycling", label: "Cycling" },
-    { id: "running", label: "Running" },
-    { id: "mini-golf", label: "Mini Golf" },
-    { id: "tennis", label: "Tennis" },
-    { id: "hiking", label: "Hiking" },
+    { id: "swimming", label: "Swimming", emoji: "🏊" },
+    { id: "cycling", label: "Cycling", emoji: "🚴" },
+    { id: "running", label: "Running", emoji: "🏃" },
+    { id: "mini-golf", label: "Mini Golf", emoji: "⛳" },
+    { id: "tennis", label: "Tennis", emoji: "🎾" },
+    { id: "hiking", label: "Hiking", emoji: "🥾" },
   ],
   "casual-drinks": [
-    { id: "cocktail-bar", label: "Cocktail Bar" },
-    { id: "wine-bar", label: "Wine Bar" },
-    { id: "coffee-date", label: "Coffee Date" },
-    { id: "craft-beer", label: "Craft Beer" },
+    { id: "cocktail-bar", label: "Cocktail Bar", emoji: "🍸" },
+    { id: "wine-bar", label: "Wine Bar", emoji: "🍷" },
+    { id: "coffee-date", label: "Coffee Date", emoji: "☕" },
+    { id: "craft-beer", label: "Craft Beer", emoji: "🍺" },
   ],
   restaurant: [
-    { id: "italian", label: "Italian" },
-    { id: "steakhouse", label: "Steakhouse" },
-    { id: "sushi", label: "Sushi" },
-    { id: "burger-place", label: "Burger Place" },
-    { id: "fine-dining", label: "Fine Dining" },
+    { id: "italian", label: "Italian", emoji: "🍝" },
+    { id: "steakhouse", label: "Steakhouse", emoji: "🥩" },
+    { id: "sushi", label: "Sushi", emoji: "🍣" },
+    { id: "burger-place", label: "Burger Place", emoji: "🍔" },
+    { id: "fine-dining", label: "Fine Dining", emoji: "🕯️" },
   ],
   picnic: [
-    { id: "lake", label: "Lake" },
-    { id: "park", label: "Park" },
-    { id: "sunset-viewpoint", label: "Sunset Viewpoint" },
-    { id: "riverside", label: "Riverside" },
+    { id: "lake", label: "Lake", emoji: "🏞️" },
+    { id: "park", label: "Park", emoji: "🌳" },
+    { id: "sunset-viewpoint", label: "Sunset Viewpoint", emoji: "🌅" },
+    { id: "riverside", label: "Riverside", emoji: "🌊" },
   ],
   "road-trip": [
-    { id: "beach", label: "Beach" },
-    { id: "mountains", label: "Mountains" },
-    { id: "nearby-city", label: "Nearby City" },
-    { id: "hidden-gem", label: "Hidden Gem" },
+    { id: "beach", label: "Beach", emoji: "🏖️" },
+    { id: "mountains", label: "Mountains", emoji: "⛰️" },
+    { id: "nearby-city", label: "Nearby City", emoji: "🏙️" },
+    { id: "hidden-gem", label: "Hidden Gem", emoji: "💎" },
   ],
   "food-adventure": [
-    { id: "street-food", label: "Street Food" },
-    { id: "dessert-tour", label: "Dessert Tour" },
-    { id: "brunch", label: "Brunch" },
-    { id: "food-festival", label: "Food Festival" },
+    { id: "street-food", label: "Street Food", emoji: "🌮" },
+    { id: "dessert-tour", label: "Dessert Tour", emoji: "🍰" },
+    { id: "brunch", label: "Brunch", emoji: "🥞" },
+    { id: "food-festival", label: "Food Festival", emoji: "🎪" },
   ],
   "movie-night": [
-    { id: "cinema", label: "Cinema" },
-    { id: "home-movie-night", label: "Home Movie Night" },
-    { id: "drive-in", label: "Drive-In" },
+    { id: "cinema", label: "Cinema", emoji: "🎥" },
+    { id: "home-movie-night", label: "Home Movie Night", emoji: "🛋️" },
+    { id: "drive-in", label: "Drive-In", emoji: "🚗" },
   ],
   "surprise-me": [
-    { id: "trust-your-choice", label: "Trust Your Choice ❤️" },
+    { id: "trust-your-choice", label: "Trust Your Choice", emoji: "💝" },
   ],
 };
 
@@ -70,7 +76,12 @@ export function getActivityOptionLabel(
   optionId: string
 ): string {
   const options = ACTIVITY_DETAILS[activityId as ActivityId];
-  return options?.find((o) => o.id === optionId)?.label ?? optionId;
+  const option = options?.find((o) => o.id === optionId);
+  if (!option) return optionId;
+  if (option.id === "trust-your-choice") {
+    return `${option.label} ❤️`;
+  }
+  return option.label;
 }
 
 export function isValidActivityId(id: string): id is ActivityId {

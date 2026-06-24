@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
 import { ACTIVITIES } from "@/lib/activities";
@@ -22,12 +22,6 @@ export function ActivityPageClient({
   const [isPending, startTransition] = useTransition();
   const [selected, setSelected] = useState(initialActivity ?? "");
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (selected) {
-      updateInvitation({ id: invitationId, activity: selected });
-    }
-  }, [selected, invitationId]);
 
   const handleContinue = () => {
     if (!selected) {

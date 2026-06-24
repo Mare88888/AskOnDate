@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
 import {
@@ -33,12 +33,6 @@ export function ActivityDetailsPageClient({
   const options = isValidActivityId(activity)
     ? ACTIVITY_DETAILS[activity as ActivityId]
     : [];
-
-  useEffect(() => {
-    if (selected) {
-      updateInvitation({ id: invitationId, activityOption: selected });
-    }
-  }, [selected, invitationId]);
 
   const handleContinue = () => {
     if (!selected) {
@@ -78,7 +72,7 @@ export function ActivityDetailsPageClient({
               transition={{ delay: index * 0.05 }}
             >
               <ActivityCard
-                emoji="✨"
+                emoji={option.emoji}
                 label={option.label}
                 selected={selected === option.id}
                 onSelect={() => setSelected(option.id)}
