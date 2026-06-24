@@ -3,8 +3,6 @@ import { getInvitation } from "@/lib/actions";
 import { isValidInvitationId } from "@/lib/utils";
 import { InvitationPageClient } from "@/components/InvitationPageClient";
 
-export const DEFAULT_INVITATION_ID = "invite";
-
 type InvitePageProps = {
   id: string;
 };

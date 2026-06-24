@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
 import { Button } from "@/components/Button";
@@ -18,6 +18,7 @@ export function InvitationPageClient({
 }: InvitationPageClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const noSlotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     updateInvitation({ id: invitationId, accepted: false });
@@ -37,7 +38,7 @@ export function InvitationPageClient({
 
   return (
     <InviteCard>
-      <div className="p-6 sm:p-8">
+      <div className="relative p-6 sm:p-8">
         <ProgressIndicator currentStep={1} />
 
         <div className="mb-6 flex justify-center">
@@ -56,12 +57,18 @@ export function InvitationPageClient({
           Will you go on a date with me? ❤️
         </h1>
 
-        <div className="flex flex-col items-center gap-2">
+        <div className="relative z-20">
           <Button onClick={handleYes} loading={isPending} className="w-full">
             Yes ❤️
           </Button>
-          <AvoidingNoButton />
+          <div
+            ref={noSlotRef}
+            className="mt-3 flex h-12 items-center justify-center"
+            aria-hidden
+          />
         </div>
+
+        <AvoidingNoButton slotRef={noSlotRef} />
       </div>
     </InviteCard>
   );

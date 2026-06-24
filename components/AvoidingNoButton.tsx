@@ -1,61 +1,191 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+const AVOID_RADIUS = 100;
+const FLEE_DISTANCE = 90;
+const MOVE_COOLDOWN_MS = 120;
+const VIEWPORT_PADDING = 8;
+
 type AvoidingNoButtonProps = {
+  slotRef: RefObject<HTMLDivElement | null>;
   className?: string;
 };
 
-export function AvoidingNoButton({ className }: AvoidingNoButtonProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function AvoidingNoButton({ slotRef, className }: AvoidingNoButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const moveCountRef = useRef(0);
+  const positionRef = useRef({ x: 0, y: 0 });
+  const lastMoveRef = useRef(0);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    setMounted(true);
   }, []);
 
-  const moveButton = useCallback(() => {
-    const container = containerRef.current;
+  useEffect(() => {
+    if (position) {
+      positionRef.current = position;
+    }
+  }, [position]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  const getViewportBounds = useCallback(() => {
     const button = buttonRef.current;
-    if (!container || !button) return;
+    if (!button) return null;
 
-    const containerRect = container.getBoundingClientRect();
-    const buttonRect = button.getBoundingClientRect();
-    const padding = 8;
+    const buttonWidth = button.offsetWidth;
+    const buttonHeight = button.offsetHeight;
+    if (buttonWidth === 0 || buttonHeight === 0) return null;
 
-    const maxX = containerRect.width - buttonRect.width - padding * 2;
-    const maxY = containerRect.height - buttonRect.height - padding * 2;
-
-    if (maxX <= 0 || maxY <= 0) return;
-
-    moveCountRef.current += 1;
-    const angle = (moveCountRef.current * 137.5 * Math.PI) / 180;
-    const radius = Math.min(maxX, maxY) * 0.4;
-    const centerX = maxX / 2;
-    const centerY = maxY / 2;
-
-    let newX = centerX + Math.cos(angle) * radius;
-    let newY = centerY + Math.sin(angle) * radius;
-
-    newX = Math.max(0, Math.min(maxX, newX));
-    newY = Math.max(0, Math.min(maxY, newY));
-
-    setPosition({ x: newX, y: newY });
+    return {
+      minX: VIEWPORT_PADDING,
+      minY: VIEWPORT_PADDING,
+      maxX: Math.max(
+        VIEWPORT_PADDING,
+        window.innerWidth - buttonWidth - VIEWPORT_PADDING
+      ),
+      maxY: Math.max(
+        VIEWPORT_PADDING,
+        window.innerHeight - buttonHeight - VIEWPORT_PADDING
+      ),
+      buttonWidth,
+      buttonHeight,
+    };
   }, []);
+
+  const setClampedPosition = useCallback(
+    (x: number, y: number) => {
+      const bounds = getViewportBounds();
+      if (!bounds) return false;
+
+      const newX = Math.max(bounds.minX, Math.min(bounds.maxX, x));
+      const newY = Math.max(bounds.minY, Math.min(bounds.maxY, y));
+      positionRef.current = { x: newX, y: newY };
+      setPosition({ x: newX, y: newY });
+      return true;
+    },
+    [getViewportBounds]
+  );
+
+  const placeInSlot = useCallback(() => {
+    const slot = slotRef.current;
+    const button = buttonRef.current;
+    if (!slot || !button) return false;
+
+    const slotRect = slot.getBoundingClientRect();
+    if (slotRect.width === 0 || slotRect.height === 0) return false;
+
+    const x = slotRect.left + (slotRect.width - button.offsetWidth) / 2;
+    const y = slotRect.top + (slotRect.height - button.offsetHeight) / 2;
+
+    return setClampedPosition(x, y);
+  }, [slotRef, setClampedPosition]);
+
+  useLayoutEffect(() => {
+    if (!mounted) return;
+
+    let attempts = 0;
+    const maxAttempts = 30;
+
+    const tryPlace = () => {
+      if (placeInSlot()) return;
+      attempts += 1;
+      if (attempts < maxAttempts) {
+        requestAnimationFrame(tryPlace);
+      }
+    };
+
+    tryPlace();
+
+    const slot = slotRef.current;
+    if (!slot) return;
+
+    const observer = new ResizeObserver(() => {
+      if (!lastMoveRef.current) {
+        placeInSlot();
+      }
+    });
+    observer.observe(slot);
+
+    const onResize = () => {
+      if (!lastMoveRef.current) {
+        placeInSlot();
+      }
+    };
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
+  }, [mounted, placeInSlot, slotRef]);
+
+  const moveAwayFrom = useCallback(
+    (clientX: number, clientY: number) => {
+      const now = Date.now();
+      if (now - lastMoveRef.current < MOVE_COOLDOWN_MS) return;
+
+      const bounds = getViewportBounds();
+      if (!bounds) return;
+
+      const { x: curX, y: curY } = positionRef.current;
+
+      const btnCenterX = curX + bounds.buttonWidth / 2;
+      const btnCenterY = curY + bounds.buttonHeight / 2;
+
+      let dx = btnCenterX - clientX;
+      let dy = btnCenterY - clientY;
+      const dist = Math.hypot(dx, dy) || 1;
+
+      if (dist < 20) {
+        const angle = Math.random() * Math.PI * 2;
+        dx = Math.cos(angle);
+        dy = Math.sin(angle);
+      } else {
+        dx /= dist;
+        dy /= dist;
+      }
+
+      let newX = curX + dx * FLEE_DISTANCE;
+      let newY = curY + dy * FLEE_DISTANCE;
+
+      if (Math.abs(newX - curX) < 8 && Math.abs(newY - curY) < 8) {
+        newX =
+          bounds.minX + Math.random() * (bounds.maxX - bounds.minX);
+        newY =
+          bounds.minY + Math.random() * (bounds.maxY - bounds.minY);
+      }
+
+      lastMoveRef.current = now;
+      setClampedPosition(newX, newY);
+    },
+    [getViewportBounds, setClampedPosition]
+  );
 
   const handlePointerMove = useCallback(
-    (e: React.PointerEvent | PointerEvent) => {
-      if (isMobile) return;
+    (e: PointerEvent) => {
+      if (isMobile || !position) return;
 
       const button = buttonRef.current;
       if (!button) return;
@@ -63,53 +193,70 @@ export function AvoidingNoButton({ className }: AvoidingNoButtonProps) {
       const rect = button.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
+      const distance = Math.hypot(e.clientX - centerX, e.clientY - centerY);
 
-      const dx = e.clientX - centerX;
-      const dy = e.clientY - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      if (distance < 100) {
-        moveButton();
+      if (distance < AVOID_RADIUS) {
+        moveAwayFrom(e.clientX, e.clientY);
       }
     },
-    [isMobile, moveButton]
+    [isMobile, moveAwayFrom, position]
   );
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || !position) return;
 
-    window.addEventListener("pointermove", handlePointerMove);
-    return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, [isMobile, handlePointerMove]);
+    document.addEventListener("pointermove", handlePointerMove, {
+      passive: true,
+    });
+    return () =>
+      document.removeEventListener("pointermove", handlePointerMove);
+  }, [isMobile, handlePointerMove, position]);
 
   const handleMobileTap = () => {
-    if (!isMobile) return;
-    moveButton();
+    const bounds = getViewportBounds();
+    if (!bounds) return;
+
+    lastMoveRef.current = Date.now();
+    setClampedPosition(
+      bounds.minX + Math.random() * (bounds.maxX - bounds.minX),
+      bounds.minY + Math.random() * (bounds.maxY - bounds.minY)
+    );
   };
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative mt-4 h-16 w-full"
-      onPointerMove={handlePointerMove}
+  if (!mounted) return null;
+
+  return createPortal(
+    <motion.button
+      ref={buttonRef}
+      type="button"
+      onPointerDown={(e) => {
+        e.preventDefault();
+        if (!position) return;
+        if (isMobile) {
+          handleMobileTap();
+        } else {
+          moveAwayFrom(e.clientX, e.clientY);
+        }
+      }}
+      style={{ position: "fixed" }}
+      initial={false}
+      animate={
+        position
+          ? { left: position.x, top: position.y, opacity: 1 }
+          : { opacity: 0 }
+      }
+      transition={{ type: "spring", stiffness: 500, damping: 28 }}
+      className={cn(
+        "z-100 cursor-default",
+        "rounded-2xl border-2 border-rose-200 bg-white px-6 py-3",
+        "text-sm font-semibold whitespace-nowrap text-rose-500",
+        "shadow-sm select-none",
+        "dark:border-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
+        className
+      )}
     >
-      <motion.button
-        ref={buttonRef}
-        type="button"
-        onClick={handleMobileTap}
-        animate={{ x: position.x, y: position.y }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className={cn(
-          "absolute left-2 top-0 z-10",
-          "rounded-2xl border-2 border-rose-200 bg-white px-6 py-3",
-          "text-sm font-semibold text-rose-500",
-          "shadow-sm select-none",
-          "dark:border-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
-          className
-        )}
-      >
-        No 🙈
-      </motion.button>
-    </div>
+      No 🙈
+    </motion.button>,
+    document.body
   );
 }

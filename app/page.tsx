@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { InvitePage, DEFAULT_INVITATION_ID } from "@/components/InvitePage";
+import { InvitePage } from "@/components/InvitePage";
+import { DEFAULT_INVITATION_ID } from "@/lib/constants";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 

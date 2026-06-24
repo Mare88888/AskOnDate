@@ -5,6 +5,7 @@ import { isValidInvitationId } from "@/lib/utils";
 import { InviteCard } from "@/components/InviteCard";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { ConfirmationSummary } from "@/components/ConfirmationSummary";
+import { DebugStartOverButton } from "@/components/DebugStartOverButton";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -50,6 +51,7 @@ export default async function ConfirmationPage({ params }: Props) {
           activity={activity}
           activityOption={activityOption}
         />
+        <DebugStartOverButton invitationId={id} />
       </div>
     </InviteCard>
   );
