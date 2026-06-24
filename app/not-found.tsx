@@ -16,7 +16,7 @@ export default function NotFound() {
           href="/"
           className="inline-block rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 px-6 py-3 text-sm font-semibold text-white shadow-md"
         >
-          Create a new invitation
+          Go to invitation
         </Link>
       </div>
     </InviteCard>

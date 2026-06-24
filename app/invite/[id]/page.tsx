@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
-import { getInvitation } from "@/lib/actions";
-import { isValidInvitationId } from "@/lib/utils";
-import { InvitationPageClient } from "@/components/InvitationPageClient";
+import { InvitePage } from "@/components/InvitePage";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -24,30 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function InvitePage({ params }: Props) {
+export default async function InvitePageRoute({ params }: Props) {
   const { id } = await params;
-
-  if (!isValidInvitationId(id)) {
-    notFound();
-  }
-
-  const result = await getInvitation(id);
-  if (!result.success) {
-    notFound();
-  }
-
-  if (result.data.accepted && result.data.activityOption) {
-    redirect(`/invite/${id}/confirmation`);
-  }
-  if (result.data.accepted && result.data.activity) {
-    redirect(`/invite/${id}/activity-details`);
-  }
-  if (result.data.accepted && result.data.dateTime) {
-    redirect(`/invite/${id}/activity`);
-  }
-  if (result.data.accepted) {
-    redirect(`/invite/${id}/datetime`);
-  }
-
-  return <InvitationPageClient invitationId={id} />;
+  return <InvitePage id={id} />;
 }
