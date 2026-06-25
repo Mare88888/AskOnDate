@@ -25,12 +25,14 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "mini-golf", label: "Mini Golf", emoji: "⛳" },
     { id: "tennis", label: "Tennis", emoji: "🎾" },
     { id: "hiking", label: "Hiking", emoji: "🥾" },
+    { id: "surprise-sporty", label: "Surprise Me", emoji: "✨" },
   ],
   "casual-drinks": [
     { id: "cocktail-bar", label: "Cocktail Bar", emoji: "🍸" },
     { id: "wine-bar", label: "Wine Bar", emoji: "🍷" },
     { id: "coffee-date", label: "Coffee Date", emoji: "☕" },
     { id: "craft-beer", label: "Craft Beer", emoji: "🍺" },
+    { id: "surprise-casual-drinks", label: "Surprise Me", emoji: "✨" },
   ],
   restaurant: [
     { id: "italian", label: "Italian", emoji: "🍝" },
@@ -38,29 +40,34 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "sushi", label: "Sushi", emoji: "🍣" },
     { id: "burger-place", label: "Burger Place", emoji: "🍔" },
     { id: "fine-dining", label: "Fine Dining", emoji: "🕯️" },
+    { id: "surprise-restaurant", label: "Surprise Me", emoji: "✨" },
   ],
   picnic: [
     { id: "lake", label: "Lake", emoji: "🏞️" },
     { id: "park", label: "Park", emoji: "🌳" },
     { id: "sunset-viewpoint", label: "Sunset Viewpoint", emoji: "🌅" },
     { id: "riverside", label: "Riverside", emoji: "🌊" },
+    { id: "surprise-picnic", label: "Surprise Me", emoji: "✨" },
   ],
   "road-trip": [
     { id: "beach", label: "Beach", emoji: "🏖️" },
     { id: "mountains", label: "Mountains", emoji: "⛰️" },
     { id: "nearby-city", label: "Nearby City", emoji: "🏙️" },
     { id: "hidden-gem", label: "Hidden Gem", emoji: "💎" },
+    { id: "surprise-road-trip", label: "Surprise Me", emoji: "✨" },
   ],
   "food-adventure": [
     { id: "street-food", label: "Street Food", emoji: "🌮" },
     { id: "dessert-tour", label: "Dessert Tour", emoji: "🍰" },
     { id: "brunch", label: "Brunch", emoji: "🥞" },
     { id: "food-festival", label: "Food Festival", emoji: "🎪" },
+    { id: "surprise-food-adventure", label: "Surprise Me", emoji: "✨" },
   ],
   "movie-night": [
     { id: "cinema", label: "Cinema", emoji: "🎥" },
     { id: "home-movie-night", label: "Home Movie Night", emoji: "🛋️" },
     { id: "drive-in", label: "Drive-In", emoji: "🚗" },
+    { id: "surprise-movie-night", label: "Surprise Me", emoji: "✨" },
   ],
   "surprise-me": [
     { id: "trust-your-choice", label: "Trust Your Choice", emoji: "💝" },
@@ -73,7 +80,7 @@ export function getActivityLabel(id: string): string {
 
 export function getActivityOptionLabel(
   activityId: string,
-  optionId: string
+  optionId: string,
 ): string {
   const options = ACTIVITY_DETAILS[activityId as ActivityId];
   const option = options?.find((o) => o.id === optionId);
