@@ -3,11 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
-import {
-  ACTIVITY_DETAILS,
-  type ActivityId,
-  isValidActivityId,
-} from "@/lib/activities";
+import { getActivityOptions } from "@/lib/activities";
 import { ActivityCard } from "@/components/ActivityCard";
 import { Button } from "@/components/Button";
 import { InviteCard } from "@/components/InviteCard";
@@ -30,9 +26,7 @@ export function ActivityDetailsPageClient({
   const [selected, setSelected] = useState(initialOption ?? "");
   const [error, setError] = useState<string | null>(null);
 
-  const options = isValidActivityId(activity)
-    ? ACTIVITY_DETAILS[activity as ActivityId]
-    : [];
+  const options = getActivityOptions(activity);
 
   const handleContinue = () => {
     if (!selected) {

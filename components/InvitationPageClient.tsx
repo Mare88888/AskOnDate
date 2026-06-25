@@ -44,7 +44,7 @@ export function InvitationPageClient({
         <div className="mb-6 flex justify-center">
           <div className="relative h-40 w-40 overflow-hidden rounded-2xl shadow-md">
             <Image
-              src="/images/date-invite.svg"
+              src="/images/teddybear.png"
               alt="Cute date invitation"
               fill
               className="object-cover"

@@ -27,8 +27,8 @@ export function ActivityCard({
         "border-2 transition-all duration-200",
         "min-h-[108px]",
         selected
-          ? "border-rose-500 bg-gradient-to-br from-rose-100/90 to-pink-50 shadow-md shadow-rose-300/40 ring-2 ring-rose-200/60 dark:from-rose-900/60 dark:to-pink-900/40 dark:border-rose-400 dark:shadow-rose-900/30 dark:ring-rose-700/40"
-          : "border-rose-100/90 bg-gradient-to-br from-white to-rose-50/40 hover:border-rose-300 hover:shadow-sm dark:border-rose-800 dark:from-rose-950/60 dark:to-rose-900/20 dark:hover:border-rose-600"
+          ? "border-rose-500 bg-linear-to-br from-rose-100/90 to-pink-50 shadow-md shadow-rose-300/40 ring-2 ring-rose-200/60 dark:from-rose-900/60 dark:to-pink-900/40 dark:border-rose-400 dark:shadow-rose-900/30 dark:ring-rose-700/40"
+          : "border-rose-100/90 bg-linear-to-br from-white to-rose-50/40 hover:border-rose-300 hover:shadow-sm dark:border-rose-800 dark:from-rose-950/60 dark:to-rose-900/20 dark:hover:border-rose-600"
       )}
     >
       {selected && (
