@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { getAppUrl } from "@/lib/utils";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,9 +22,7 @@ export const metadata: Metadata = {
   },
   description:
     "A cute, romantic date invitation — will you go on a date with me?",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
-  ),
+  metadataBase: new URL(getAppUrl()),
   openGraph: {
     title: "Date With Me ❤️",
     description: "Someone special has a question for you...",

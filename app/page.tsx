@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { createInvitation } from "@/lib/actions";
+import { getAppUrl } from "@/lib/utils";
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const appUrl = getAppUrl();
 
 export const dynamic = "force-dynamic";
 

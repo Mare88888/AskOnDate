@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { InvitePage } from "@/components/InvitePage";
+import { getAppUrl } from "@/lib/utils";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -7,7 +8,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const appUrl = getAppUrl();
 
   return {
     title: "Will you go on a date with me? ❤️",
