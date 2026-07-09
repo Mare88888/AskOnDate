@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 import { createInvitation } from "@/lib/actions";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Will you go on a date with me? ❤️",
@@ -22,6 +25,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
+  noStore();
+
   const result = await createInvitation();
   if (!result.success) {
     throw new Error(result.error);
