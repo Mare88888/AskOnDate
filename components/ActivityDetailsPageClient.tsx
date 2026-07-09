@@ -41,7 +41,7 @@ export function ActivityDetailsPageClient({
         activityOption: selected,
       });
       if (result.success) {
-        router.push(`/invite/${invitationId}/confirmation`);
+        router.push(`/invite/${invitationId}/message`);
       } else {
         setError(result.error);
       }

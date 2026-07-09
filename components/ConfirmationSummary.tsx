@@ -13,12 +13,14 @@ type ConfirmationSummaryProps = {
   dateTime: Date;
   activity: string;
   activityOption: string;
+  customMessage: string | null;
 };
 
 export function ConfirmationSummary({
   dateTime,
   activity,
   activityOption,
+  customMessage,
 }: ConfirmationSummaryProps) {
   const [hearts, setHearts] = useState<
     { id: number; left: number; delay: number; emoji: string }[]
@@ -62,6 +64,9 @@ export function ConfirmationSummary({
     { label: "Time", value: formatTime(dateTime) },
     { label: "Activity", value: getActivityLabel(activity) },
     { label: "Choice", value: getActivityOptionLabel(activity, activityOption) },
+    ...(customMessage
+      ? [{ label: "Your message", value: customMessage }]
+      : []),
   ];
 
   return (

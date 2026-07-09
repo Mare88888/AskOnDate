@@ -27,7 +27,8 @@ export default async function ConfirmationPage({ params }: Props) {
     notFound();
   }
 
-  const { accepted, dateTime, activity, activityOption } = result.data;
+  const { accepted, dateTime, activity, activityOption, customMessage } =
+    result.data;
 
   if (!accepted) {
     redirect(`/invite/${id}`);
@@ -41,15 +42,19 @@ export default async function ConfirmationPage({ params }: Props) {
   if (!activityOption) {
     redirect(`/invite/${id}/activity-details`);
   }
+  if (result.data.customMessage === null) {
+    redirect(`/invite/${id}/message`);
+  }
 
   return (
     <InviteCard>
       <div className="p-6 sm:p-8">
-        <ProgressIndicator currentStep={5} />
+        <ProgressIndicator currentStep={6} />
         <ConfirmationSummary
           dateTime={dateTime}
           activity={activity}
           activityOption={activityOption}
+          customMessage={customMessage}
         />
         <DebugStartOverButton invitationId={id} />
       </div>

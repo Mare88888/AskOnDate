@@ -24,6 +24,7 @@ export function DebugStartOverButton({
         dateTime: null,
         activity: null,
         activityOption: null,
+        customMessage: null,
       });
 
       const startPath =

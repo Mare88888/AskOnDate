@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getInvitation } from "@/lib/actions";
 import { isValidInvitationId } from "@/lib/utils";
-import { DateTimePageClient } from "@/components/DateTimePageClient";
+import { isValidActivityId } from "@/lib/activities";
+import { MessagePageClient } from "@/components/MessagePageClient";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export const metadata: Metadata = {
-  title: "When are you free?",
+  title: "Your message",
 };
 
-export default async function DateTimePage({ params }: Props) {
+export default async function MessagePage({ params }: Props) {
   const { id } = await params;
 
   if (!isValidInvitationId(id)) {
@@ -28,21 +29,26 @@ export default async function DateTimePage({ params }: Props) {
     redirect(`/invite/${id}`);
   }
 
-  if (result.data.activityOption) {
-    redirect(
-      result.data.customMessage !== null
-        ? `/invite/${id}/confirmation`
-        : `/invite/${id}/message`
-    );
+  if (!result.data.dateTime) {
+    redirect(`/invite/${id}/datetime`);
   }
-  if (result.data.activity) {
+
+  if (!result.data.activity || !isValidActivityId(result.data.activity)) {
+    redirect(`/invite/${id}/activity`);
+  }
+
+  if (!result.data.activityOption) {
     redirect(`/invite/${id}/activity-details`);
   }
 
+  if (result.data.customMessage !== null) {
+    redirect(`/invite/${id}/confirmation`);
+  }
+
   return (
-    <DateTimePageClient
+    <MessagePageClient
       invitationId={id}
-      initialDateTime={result.data.dateTime}
+      initialMessage={result.data.customMessage}
     />
   );
 }

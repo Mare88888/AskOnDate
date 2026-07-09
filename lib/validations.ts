@@ -19,6 +19,7 @@ export const updateInvitationSchema = z.object({
   dateTime: z.coerce.date().optional().nullable(),
   activity: z.string().min(1).max(100).optional().nullable(),
   activityOption: z.string().min(1).max(100).optional().nullable(),
+  customMessage: z.string().max(500).optional().nullable(),
 });
 
 export const getInvitationSchema = z.object({

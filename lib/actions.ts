@@ -16,6 +16,7 @@ export type DateResponseData = {
   dateTime: Date | null;
   activity: string | null;
   activityOption: string | null;
+  customMessage: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -85,6 +86,7 @@ export async function updateInvitation(
     dateTime?: Date | null;
     activity?: string | null;
     activityOption?: string | null;
+    customMessage?: string | null;
   }
 ): Promise<ActionResult<DateResponseData>> {
   try {
@@ -105,6 +107,7 @@ export async function updateInvitation(
     revalidatePath(`/invite/${id}/datetime`);
     revalidatePath(`/invite/${id}/activity`);
     revalidatePath(`/invite/${id}/activity-details`);
+    revalidatePath(`/invite/${id}/message`);
     revalidatePath(`/invite/${id}/confirmation`);
 
     return { success: true, data: invitation };

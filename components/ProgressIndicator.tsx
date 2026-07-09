@@ -9,7 +9,7 @@ type ProgressIndicatorProps = {
 
 export function ProgressIndicator({
   currentStep,
-  totalSteps = 5,
+  totalSteps = 6,
 }: ProgressIndicatorProps) {
   const progress = (currentStep / totalSteps) * 100;
 

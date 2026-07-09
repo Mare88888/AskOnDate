@@ -17,8 +17,11 @@ export async function InvitePage({ id }: InvitePageProps) {
     notFound();
   }
 
-  if (result.data.accepted && result.data.activityOption) {
+  if (result.data.accepted && result.data.customMessage !== null) {
     redirect(`/invite/${id}/confirmation`);
+  }
+  if (result.data.accepted && result.data.activityOption) {
+    redirect(`/invite/${id}/message`);
   }
   if (result.data.accepted && result.data.activity) {
     redirect(`/invite/${id}/activity-details`);

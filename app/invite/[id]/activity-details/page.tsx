@@ -38,7 +38,7 @@ export default async function ActivityDetailsPage({ params }: Props) {
   }
 
   if (result.data.activityOption) {
-    redirect(`/invite/${id}/confirmation`);
+    redirect(`/invite/${id}/message`);
   }
 
   return (

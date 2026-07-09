@@ -13,6 +13,7 @@ model DateResponse {
   dateTime       DateTime?
   activity       String?
   activityOption String?
+  customMessage  String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
