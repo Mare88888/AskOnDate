@@ -4,11 +4,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
 import { getActivityOptions } from "@/lib/activities";
-import { ActivityCard } from "@/components/ActivityCard";
+import { ActivitySelectionGrid } from "@/components/ActivitySelectionGrid";
 import { Button } from "@/components/Button";
 import { InviteCard } from "@/components/InviteCard";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
-import { motion } from "framer-motion";
 
 type ActivityDetailsPageClientProps = {
   invitationId: string;
@@ -68,23 +67,12 @@ export function ActivityDetailsPageClient({
           What are you feeling?
         </h1>
 
-        <div className="mb-6 grid grid-cols-2 gap-3">
-          {options.map((option, index) => (
-            <motion.div
-              key={option.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <ActivityCard
-                emoji={option.emoji}
-                label={option.label}
-                selected={selected === option.id}
-                onSelect={() => setSelected(option.id)}
-              />
-            </motion.div>
-          ))}
-        </div>
+        <ActivitySelectionGrid
+          items={options}
+          selected={selected}
+          onSelect={setSelected}
+          animated
+        />
 
         {error && (
           <p className="mb-4 text-center text-sm text-red-500">{error}</p>

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
 import { ACTIVITIES } from "@/lib/activities";
-import { ActivityCard } from "@/components/ActivityCard";
+import { ActivitySelectionGrid } from "@/components/ActivitySelectionGrid";
 import { Button } from "@/components/Button";
 import { InviteCard } from "@/components/InviteCard";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
@@ -65,17 +65,11 @@ export function ActivityPageClient({
           What kind of date sounds fun?
         </h1>
 
-        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-2">
-          {ACTIVITIES.map((activity) => (
-            <ActivityCard
-              key={activity.id}
-              emoji={activity.emoji}
-              label={activity.label}
-              selected={selected === activity.id}
-              onSelect={() => setSelected(activity.id)}
-            />
-          ))}
-        </div>
+        <ActivitySelectionGrid
+          items={ACTIVITIES}
+          selected={selected}
+          onSelect={setSelected}
+        />
 
         {error && (
           <p className="mb-4 text-center text-sm text-red-500">{error}</p>
