@@ -3,7 +3,6 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateInvitation } from "@/lib/actions";
-import { DEFAULT_INVITATION_ID } from "@/lib/constants";
 import { Button } from "@/components/Button";
 
 type DebugStartOverButtonProps = {
@@ -27,11 +26,7 @@ export function DebugStartOverButton({
         customMessage: null,
       });
 
-      const startPath =
-        invitationId === DEFAULT_INVITATION_ID
-          ? "/"
-          : `/invite/${invitationId}`;
-      router.push(startPath);
+      router.push(`/invite/${invitationId}`);
     });
   };
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { InvitePage } from "@/components/InvitePage";
-import { DEFAULT_INVITATION_ID } from "@/lib/constants";
+import { redirect } from "next/navigation";
+import { createInvitation } from "@/lib/actions";
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     url: appUrl,
     images: [
       {
-        url: `${appUrl}/api/og?id=${DEFAULT_INVITATION_ID}`,
+        url: `${appUrl}/api/og`,
         width: 1200,
         height: 630,
       },
@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
-  return <InvitePage id={DEFAULT_INVITATION_ID} />;
+export default async function HomePage() {
+  const result = await createInvitation();
+  if (!result.success) {
+    throw new Error(result.error);
+  }
+
+  redirect(`/invite/${result.data.id}`);
 }
