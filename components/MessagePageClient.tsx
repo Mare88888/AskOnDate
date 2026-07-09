@@ -32,7 +32,7 @@ export function MessagePageClient({
         customMessage: message.trim(),
       });
       if (result.success) {
-        router.push(`/invite/${invitationId}/confirmation`);
+        router.replace(`/invite/${invitationId}/confirmation`);
       } else {
         setError(result.error);
       }

@@ -5,7 +5,7 @@ import { isValidInvitationId } from "@/lib/utils";
 import { InviteCard } from "@/components/InviteCard";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
 import { ConfirmationSummary } from "@/components/ConfirmationSummary";
-import { DebugStartOverButton } from "@/components/DebugStartOverButton";
+import { ConfirmationHistoryGuard } from "@/components/ConfirmationHistoryGuard";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -48,6 +48,7 @@ export default async function ConfirmationPage({ params }: Props) {
 
   return (
     <InviteCard>
+      <ConfirmationHistoryGuard />
       <div className="p-6 sm:p-8">
         <ProgressIndicator currentStep={6} />
         <ConfirmationSummary

@@ -31,7 +31,7 @@ export function InvitationPageClient({
         accepted: true,
       });
       if (result.success) {
-        router.push(`/invite/${invitationId}/datetime`);
+        router.replace(`/invite/${invitationId}/datetime`);
       }
     });
   };

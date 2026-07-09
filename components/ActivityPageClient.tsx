@@ -37,7 +37,7 @@ export function ActivityPageClient({
         activityOption: null,
       });
       if (result.success) {
-        router.push(`/invite/${invitationId}/activity-details`);
+        router.replace(`/invite/${invitationId}/activity-details`);
       } else {
         setError(result.error);
       }

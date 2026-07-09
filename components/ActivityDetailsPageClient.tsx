@@ -41,7 +41,7 @@ export function ActivityDetailsPageClient({
         activityOption: selected,
       });
       if (result.success) {
-        router.push(`/invite/${invitationId}/message`);
+        router.replace(`/invite/${invitationId}/message`);
       } else {
         setError(result.error);
       }

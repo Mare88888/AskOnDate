@@ -65,7 +65,7 @@ export function DateTimePageClient({
         dateTime,
       });
       if (result.success) {
-        router.push(`/invite/${invitationId}/activity`);
+        router.replace(`/invite/${invitationId}/activity`);
       } else {
         setError(result.error);
       }
