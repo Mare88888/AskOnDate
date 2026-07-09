@@ -29,8 +29,10 @@ export function AvoidingNoButton({ slotRef, className }: AvoidingNoButtonProps) 
   );
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showMobileHint, setShowMobileHint] = useState(false);
   const positionRef = useRef({ x: 0, y: 0 });
   const lastMoveRef = useRef(0);
+  const hintTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -48,6 +50,14 @@ export function AvoidingNoButton({ slotRef, className }: AvoidingNoButtonProps) 
     update();
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (hintTimeoutRef.current) {
+        clearTimeout(hintTimeoutRef.current);
+      }
+    };
   }, []);
 
   const getViewportBounds = useCallback(() => {
@@ -221,42 +231,69 @@ export function AvoidingNoButton({ slotRef, className }: AvoidingNoButtonProps) 
       bounds.minX + Math.random() * (bounds.maxX - bounds.minX),
       bounds.minY + Math.random() * (bounds.maxY - bounds.minY)
     );
+
+    setShowMobileHint(true);
+    if (hintTimeoutRef.current) {
+      clearTimeout(hintTimeoutRef.current);
+    }
+    hintTimeoutRef.current = setTimeout(() => {
+      setShowMobileHint(false);
+    }, 3000);
   };
 
   if (!mounted) return null;
 
   return createPortal(
-    <motion.button
-      ref={buttonRef}
-      type="button"
-      onPointerDown={(e) => {
-        e.preventDefault();
-        if (!position) return;
-        if (isMobile) {
-          handleMobileTap();
-        } else {
-          moveAwayFrom(e.clientX, e.clientY);
+    <>
+      <motion.button
+        ref={buttonRef}
+        type="button"
+        onPointerDown={(e) => {
+          e.preventDefault();
+          if (!position) return;
+          if (isMobile) {
+            handleMobileTap();
+          } else {
+            moveAwayFrom(e.clientX, e.clientY);
+          }
+        }}
+        style={{ position: "fixed" }}
+        initial={false}
+        animate={
+          position
+            ? { left: position.x, top: position.y, opacity: 1 }
+            : { opacity: 0 }
         }
-      }}
-      style={{ position: "fixed" }}
-      initial={false}
-      animate={
-        position
-          ? { left: position.x, top: position.y, opacity: 1 }
-          : { opacity: 0 }
-      }
-      transition={{ type: "spring", stiffness: 500, damping: 28 }}
-      className={cn(
-        "z-100 cursor-default",
-        "rounded-2xl border-2 border-rose-200 bg-white px-6 py-3",
-        "text-sm font-semibold whitespace-nowrap text-rose-500",
-        "shadow-sm select-none",
-        "dark:border-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
-        className
+        transition={{ type: "spring", stiffness: 500, damping: 28 }}
+        className={cn(
+          "z-100 cursor-default",
+          "rounded-2xl border-2 border-rose-200 bg-white px-6 py-3",
+          "text-sm font-semibold whitespace-nowrap text-rose-500",
+          "shadow-sm select-none",
+          "dark:border-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
+          className
+        )}
+      >
+        No 🙈
+      </motion.button>
+
+      {isMobile && showMobileHint && (
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 8 }}
+          className={cn(
+            "pointer-events-none fixed bottom-6 left-4 right-4 z-100",
+            "mx-auto max-w-sm rounded-2xl px-4 py-3 text-center text-sm",
+            "bg-white/95 text-rose-600 shadow-lg shadow-rose-200/50",
+            "border border-rose-100",
+            "dark:bg-rose-950/95 dark:text-rose-200 dark:shadow-rose-900/40 dark:border-rose-800"
+          )}
+        >
+          Sorry that button doesn&apos;t work, try the other one 😉
+        </motion.p>
       )}
-    >
-      No 🙈
-    </motion.button>,
+    </>,
     document.body
   );
 }
