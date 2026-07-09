@@ -37,10 +37,6 @@ export default async function ActivityDetailsPage({ params }: Props) {
     redirect(`/invite/${id}/activity`);
   }
 
-  if (result.data.activityOption) {
-    redirect(`/invite/${id}/message`);
-  }
-
   return (
     <ActivityDetailsPageClient
       invitationId={id}

@@ -39,11 +39,9 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "sushi", label: "Sushi", emoji: "🍣" },
     { id: "kebab", label: "Kebab", emoji: "🥙" },
     { id: "burger-place", label: "Burger Place", emoji: "🍔" },
-    { id: "fine-dining", label: "Fine Dining", emoji: "🕯️" },
-    { id: "street-food", label: "Street Food", emoji: "🌮" },
+    { id: "casual-restaurant", label: "Casual Restaurant", emoji: "🕯️" },
     { id: "dessert-tour", label: "Dessert Tour", emoji: "🍰" },
     { id: "brunch", label: "Brunch", emoji: "🥞" },
-    { id: "food-festival", label: "Food Festival", emoji: "🎪" },
     { id: "surprise-restaurant", label: "Surprise Me", emoji: "✨" },
   ],
   picnic: [
@@ -71,7 +69,6 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
   "movie-night": [
     { id: "cinema", label: "Cinema", emoji: "🎥" },
     { id: "home-movie-night", label: "Home Movie Night", emoji: "🛋️" },
-    { id: "drive-in", label: "Drive-In", emoji: "🚗" },
     { id: "surprise-movie-night", label: "Surprise Me", emoji: "✨" },
   ],
   "surprise-me": [

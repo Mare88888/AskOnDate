@@ -41,10 +41,6 @@ export default async function MessagePage({ params }: Props) {
     redirect(`/invite/${id}/activity-details`);
   }
 
-  if (result.data.customMessage !== null) {
-    redirect(`/invite/${id}/confirmation`);
-  }
-
   return (
     <MessagePageClient
       invitationId={id}

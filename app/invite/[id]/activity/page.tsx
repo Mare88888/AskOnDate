@@ -32,14 +32,6 @@ export default async function ActivityPage({ params }: Props) {
     redirect(`/invite/${id}/datetime`);
   }
 
-  if (result.data.activityOption) {
-    redirect(
-      result.data.customMessage !== null
-        ? `/invite/${id}/confirmation`
-        : `/invite/${id}/message`
-    );
-  }
-
   return (
     <ActivityPageClient
       invitationId={id}

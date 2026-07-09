@@ -28,17 +28,6 @@ export default async function DateTimePage({ params }: Props) {
     redirect(`/invite/${id}`);
   }
 
-  if (result.data.activityOption) {
-    redirect(
-      result.data.customMessage !== null
-        ? `/invite/${id}/confirmation`
-        : `/invite/${id}/message`
-    );
-  }
-  if (result.data.activity) {
-    redirect(`/invite/${id}/activity-details`);
-  }
-
   return (
     <DateTimePageClient
       invitationId={id}

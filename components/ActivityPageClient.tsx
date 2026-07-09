@@ -44,6 +44,18 @@ export function ActivityPageClient({
     });
   };
 
+  const handleBack = () => {
+    startTransition(async () => {
+      await updateInvitation({
+        id: invitationId,
+        activity: null,
+        activityOption: null,
+        customMessage: null,
+      });
+      router.push(`/invite/${invitationId}/datetime`);
+    });
+  };
+
   return (
     <InviteCard className="max-w-[480px]">
       <div className="p-6 sm:p-8">
@@ -72,7 +84,8 @@ export function ActivityPageClient({
         <div className="flex gap-3">
           <Button
             variant="secondary"
-            onClick={() => router.push(`/invite/${invitationId}/datetime`)}
+            onClick={handleBack}
+            loading={isPending}
             className="flex-1"
           >
             Back
