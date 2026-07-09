@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | Date With Me",
   },
   description:
-    "A cute, romantic date invitation — will you go on a date with me?",
+    "A cute, romantic date invitation - will you go on a date with me?",
   metadataBase: new URL(getAppUrl()),
   openGraph: {
     title: "Date With Me ❤️",

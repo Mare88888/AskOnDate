@@ -14,7 +14,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-block rounded-2xl bg-gradient-to-r from-rose-500 to-pink-500 px-6 py-3 text-sm font-semibold text-white shadow-md"
+          className="inline-block rounded-2xl bg-linear-to-r from-rose-500 to-pink-500 px-6 py-3 text-sm font-semibold text-white shadow-md"
         >
           Go to invitation
         </Link>
