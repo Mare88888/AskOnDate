@@ -56,7 +56,6 @@ export default async function ConfirmationPage({ params }: Props) {
           activityOption={activityOption}
           customMessage={customMessage}
         />
-        <DebugStartOverButton invitationId={id} />
       </div>
     </InviteCard>
   );
