@@ -23,7 +23,7 @@ export function ProgressIndicator({
       </div>
       <div className="h-2 w-full overflow-hidden rounded-full bg-rose-100 dark:bg-rose-900/50">
         <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-rose-400 to-pink-500"
+          className="h-full rounded-full bg-linear-to-r from-rose-400 to-pink-500"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.5, ease: "easeOut" }}

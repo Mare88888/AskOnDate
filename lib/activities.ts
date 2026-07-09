@@ -59,7 +59,6 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "surprise-road-trip", label: "Surprise Me", emoji: "✨" },
   ],
   relaxed: [
-    { id: "spa-day", label: "Spa Day", emoji: "💆" },
     { id: "thermal-baths", label: "Therme / Thermal Baths", emoji: "♨️" },
     { id: "walk-drink", label: "Walk & a Drink", emoji: "☕" },
     { id: "sunset-chill", label: "Sunset Chill", emoji: "🌅" },

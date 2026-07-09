@@ -59,8 +59,7 @@ export function MessagePageClient({
           Anything else you&apos;d like to say?
         </h1>
         <p className="mb-6 text-center text-sm text-rose-500 dark:text-rose-400">
-          Add a sweet note, a request, or anything on your mind — or skip if
-          you&apos;re good 💌
+          Add a sweet note, a request, or anything on your mind 💌
         </p>
 
         <label htmlFor="custom-message" className="sr-only">
@@ -70,7 +69,7 @@ export function MessagePageClient({
           id="custom-message"
           value={message}
           onChange={(e) => setMessage(e.target.value.slice(0, MAX_MESSAGE_LENGTH))}
-          placeholder="Can't wait to see you! Maybe we grab gelato after? 😊"
+          placeholder="Can't wait to see you!"
           rows={5}
           className={cn(
             "w-full resize-none rounded-2xl border-2 border-rose-200 bg-white px-4 py-3",
