@@ -78,6 +78,7 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "concert", label: "Concert", emoji: "🎤" },
     { id: "darts", label: "Darts", emoji: "🎯" },
     { id: "pool", label: "Pool", emoji: "🎱" },
+    { id: "escape-room", label: "Escape Room", emoji: "🔐" },
     { id: "surprise-activities", label: "Surprise Me", emoji: "✨" },
   ],
   "surprise-me": [
