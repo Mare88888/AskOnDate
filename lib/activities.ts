@@ -67,11 +67,13 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "massage", label: "Massage & Relax", emoji: "🧘" },
     { id: "surprise-relaxed", label: "Surprise Me", emoji: "✨" },
     { id: "stargazing", label: "Stargazing", emoji: "🌌" },
+    { id: "cuddle-session", label: "Cuddle Session", emoji: "🫂" },
   ],
   "movie-night": [
     { id: "cinema", label: "Cinema", emoji: "🎥" },
     { id: "home-movie-night", label: "Home Movie Night", emoji: "🛋️" },
     { id: "surprise-movie-night", label: "Surprise Me", emoji: "✨" },
+    { id: "netflix-&-chill", label: "Netflix ( & Chill )", emoji: "🍿" },
   ],
   activities: [
     { id: "bowling", label: "Bowling", emoji: "🎳" },
