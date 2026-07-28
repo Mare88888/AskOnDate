@@ -66,6 +66,7 @@ export const ACTIVITY_DETAILS: Record<ActivityId, ActivityOption[]> = {
     { id: "sunset-chill", label: "Sunset Chill", emoji: "🌅" },
     { id: "massage", label: "Massage & Relax", emoji: "🧘" },
     { id: "surprise-relaxed", label: "Surprise Me", emoji: "✨" },
+    { id: "stargazing", label: "Stargazing", emoji: "🌌" },
   ],
   "movie-night": [
     { id: "cinema", label: "Cinema", emoji: "🎥" },
@@ -161,9 +162,7 @@ export function getActivityOptionLabel(
 }
 
 export function isValidActivityId(id: string): id is ActivityId {
-  return (
-    ACTIVITIES.some((a) => a.id === id) || id in LEGACY_ACTIVITY_ALIASES
-  );
+  return ACTIVITIES.some((a) => a.id === id) || id in LEGACY_ACTIVITY_ALIASES;
 }
 
 export function resolveActivityId(id: string): ActivityId | null {
