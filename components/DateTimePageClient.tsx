@@ -7,10 +7,11 @@ import { Button } from "@/components/Button";
 import { DateTimePicker } from "@/components/DateTimePicker";
 import { InviteCard } from "@/components/InviteCard";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
+import { toDateInputValue, toTimeInputValue } from "@/lib/utils";
 
 type DateTimePageClientProps = {
   invitationId: string;
-  initialDateTime: Date | null;
+  initialDateTime: Date | string | null;
 };
 
 export function DateTimePageClient({
@@ -21,16 +22,8 @@ export function DateTimePageClient({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const [date, setDate] = useState(
-    initialDateTime
-      ? initialDateTime.toISOString().split("T")[0]
-      : ""
-  );
-  const [time, setTime] = useState(
-    initialDateTime
-      ? initialDateTime.toTimeString().slice(0, 5)
-      : ""
-  );
+  const [date, setDate] = useState(() => toDateInputValue(initialDateTime));
+  const [time, setTime] = useState(() => toTimeInputValue(initialDateTime));
 
   useEffect(() => {
     if (date && time) {
@@ -77,7 +70,6 @@ export function DateTimePageClient({
       await updateInvitation({
         id: invitationId,
         accepted: false,
-        dateTime: null,
         activity: null,
         activityOption: null,
         customMessage: null,
