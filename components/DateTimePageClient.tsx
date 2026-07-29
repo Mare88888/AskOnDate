@@ -7,7 +7,7 @@ import { Button } from "@/components/Button";
 import { DateTimePicker } from "@/components/DateTimePicker";
 import { InviteCard } from "@/components/InviteCard";
 import { ProgressIndicator } from "@/components/ProgressIndicator";
-import { toDateInputValue, toTimeInputValue } from "@/lib/utils";
+import { toDateInputValue, toTimeInputValue, parseWallClockDateTime } from "@/lib/utils";
 
 type DateTimePageClientProps = {
   invitationId: string;
@@ -27,7 +27,7 @@ export function DateTimePageClient({
 
   useEffect(() => {
     if (date && time) {
-      const dateTime = new Date(`${date}T${time}`);
+      const dateTime = parseWallClockDateTime(date, time);
       if (!isNaN(dateTime.getTime())) {
         updateInvitation({ id: invitationId, dateTime });
       }
@@ -40,13 +40,21 @@ export function DateTimePageClient({
       return;
     }
 
-    const dateTime = new Date(`${date}T${time}`);
+    const dateTime = parseWallClockDateTime(date, time);
     if (isNaN(dateTime.getTime())) {
       setError("Invalid date or time");
       return;
     }
 
-    if (dateTime < new Date()) {
+    const now = new Date();
+    const localNowAsWallClock = Date.UTC(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes()
+    );
+    if (dateTime.getTime() < localNowAsWallClock) {
       setError("Please select a future date and time");
       return;
     }

@@ -13,21 +13,36 @@ export function getAppUrl(): string {
   return `https://${raw.replace(/\/$/, "")}`;
 }
 
-export function formatDate(date: Date): string {
+export function formatDate(date: Date | string): string {
+  const value = date instanceof Date ? date : new Date(date);
   return new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(date);
+    timeZone: "UTC",
+  }).format(value);
 }
 
-export function formatTime(date: Date): string {
+export function formatTime(date: Date | string): string {
+  const value = date instanceof Date ? date : new Date(date);
   return new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-  }).format(date);
+    timeZone: "UTC",
+  }).format(value);
+}
+
+/**
+ * Build a Date from the user's picked date/time as a wall-clock value.
+ * Stored via UTC so Prisma/Postgres keep 20:00 when the user picks 8:00 PM
+ * (avoids shifting by the local timezone offset).
+ */
+export function parseWallClockDateTime(date: string, time: string): Date {
+  const [year, month, day] = date.split("-").map(Number);
+  const [hours, minutes] = time.split(":").map(Number);
+  return new Date(Date.UTC(year, month - 1, day, hours, minutes));
 }
 
 /** Local YYYY-MM-DD / HH:mm for date/time inputs (handles Date or ISO string). */
@@ -35,9 +50,9 @@ export function toDateInputValue(value: Date | string | null | undefined): strin
   if (!value) return "";
   const date = value instanceof Date ? value : new Date(value);
   if (isNaN(date.getTime())) return "";
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
@@ -45,8 +60,8 @@ export function toTimeInputValue(value: Date | string | null | undefined): strin
   if (!value) return "";
   const date = value instanceof Date ? value : new Date(value);
   if (isNaN(date.getTime())) return "";
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
 }
 
